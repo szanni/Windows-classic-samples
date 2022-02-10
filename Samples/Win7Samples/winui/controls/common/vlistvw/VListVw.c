@@ -477,6 +477,12 @@ HWND     hwndListView = GetDlgItem(hWnd, ID_LISTVIEW);
 
 switch(lpnmh->code)
    {
+   case LVN_ITEMCHANGED:
+      puts("LVN_ITEMCHANGED");
+      break;
+   case LVN_ODSTATECHANGED:
+      puts("LVN_ODSTATECHANGED");
+      break;
    case LVN_GETDISPINFO:
       {
       LV_DISPINFO *lpdi = (LV_DISPINFO *)lParam;
