@@ -464,6 +464,24 @@ ListView_SetItemCount(hwndListView, ITEM_COUNT);
 return TRUE;
 }
 
+void print_state(UINT state)
+{
+   if (state & LVIS_ACTIVATING)
+      puts("  LVIS_ACTIVATING");
+   if (state & LVIS_CUT)
+      puts("  LVIS_CUT");
+   if (state & LVIS_DROPHILITED)
+      puts("  LVIS_DROPHILITED");
+   if (state & LVIS_FOCUSED)
+      puts("  LVIS_FOCUSED");
+   if (state & LVIS_OVERLAYMASK)
+      puts("  LVIS_OVERLAYMASK");
+   if (state & LVIS_SELECTED)
+      puts("  LVIS_SELECTED");
+   if (state & LVIS_STATEIMAGEMASK)
+      puts("  LVIS_STATEIMAGEMASK");
+}
+
 /**************************************************************************
 
    ListViewNotify()
@@ -478,10 +496,24 @@ HWND     hwndListView = GetDlgItem(hWnd, ID_LISTVIEW);
 switch(lpnmh->code)
    {
    case LVN_ITEMCHANGED:
-      puts("LVN_ITEMCHANGED");
+      {
+      NMLISTVIEW *nm = (NMLISTVIEW *) lpnmh;
+      printf("LVN_ITEMCHANGED: %d\n", nm->iItem);
+      printf(" Old\n");
+      print_state(nm->uOldState);
+      printf(" New\n");
+      print_state(nm->uNewState);
+      }
       break;
    case LVN_ODSTATECHANGED:
-      puts("LVN_ODSTATECHANGED");
+      {
+      NMLVODSTATECHANGE *nm = (NMLVODSTATECHANGE *) lpnmh;
+      printf("LVN_ODSTATECHANGED: %d - %d\n", nm->iFrom, nm->iTo);
+      printf(" Old\n");
+      print_state(nm->uOldState);
+      printf(" New\n");
+      print_state(nm->uNewState);
+      }
       break;
    case LVN_GETDISPINFO:
       {
